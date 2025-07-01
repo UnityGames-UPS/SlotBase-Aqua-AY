@@ -11,7 +11,7 @@ public class Bonus_Controller : MonoBehaviour
     [SerializeField] private Button[] chest;
     [SerializeField] private ImageAnimation[] chestAnim;
     [SerializeField] private TMP_Text[] reward_text;
-    private List<int> resultData= new List<int>();
+    private List<double> resultData= new List<double>();
     [SerializeField] private GameObject bonusObject;
 
     public int openCount;
@@ -21,6 +21,7 @@ public class Bonus_Controller : MonoBehaviour
     [SerializeField] private List<int> openIndex;
     [SerializeField] private AudioController audioController;
     [SerializeField] private SlotBehaviour slotBehaviour;
+    [SerializeField] private SocketIOManager socketManager;
 
     [SerializeField] private GameObject WinPopUp;
     [SerializeField] private TMP_Text WinPopUpText;
@@ -31,16 +32,16 @@ public class Bonus_Controller : MonoBehaviour
         {
             int index = i;
             chest[i].onClick.RemoveAllListeners();
-            chest[i].onClick.AddListener(delegate { OnChestOpen(index); });
+            chest[i].onClick.AddListener(delegate { OnChestOpen(index); socketManager.OnBonusCollect(index); });
         }
     }
 
-    internal void StartBonusGame(List<string> result)
+    internal void StartBonusGame(List<double> result)
     {
 
         for (int i = 0; i < result.Count; i++)
         {
-            resultData.Add(int.Parse(result[i]));
+            resultData.Add(result[i]);
         }
 
         audioController.StopBgAudio();
@@ -95,10 +96,10 @@ public class Bonus_Controller : MonoBehaviour
         audioController.StopApinBonusAudio();
         chestAnim[index].StartAnimation();
 
-        if (resultData[openCount] > 0)
+        if (resultData[index] > 0)
         {
             audioController.PlayWLAudio("bonuswin");
-            reward_text[index].text = "+ " + (resultData[openCount]* slotBehaviour.GetCurrentbetperLine()).ToString();
+            reward_text[index].text = "+ " + (resultData[index]* slotBehaviour.GetCurrentbetperLine()).ToString();
             winAmount += (resultData[openCount] * slotBehaviour.GetCurrentbetperLine());
         }
         else
@@ -116,7 +117,7 @@ public class Bonus_Controller : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         reward_text[index].gameObject.SetActive(false);
         reward_text[index].transform.localPosition = new Vector3(-50, -42);
-        openCount++;
+       
         audioController.StopWLAaudio();
 
         if (gameFinishied) {

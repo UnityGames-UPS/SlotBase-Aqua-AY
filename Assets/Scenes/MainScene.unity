@@ -5394,6 +5394,7 @@ MonoBehaviour:
   openIndex: 
   audioController: {fileID: 4877248867377730751}
   slotBehaviour: {fileID: 2046803210}
+  socketManager: {fileID: 500036492}
   WinPopUp: {fileID: 1770796090}
   WinPopUpText: {fileID: 1236001432}
 --- !u!4 &342004809
@@ -8282,7 +8283,7 @@ MonoBehaviour:
   uIManager: {fileID: 377874625}
   bonusdata: []
   _jsManager: {fileID: 500036493}
-  TestToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3N2JhM2QzOTgxYmU0MzlkMjkyYzgzYSIsInVzZXJuYW1lIjoiTWVldCIsInJvbGUiOiJwbGF5ZXIiLCJpYXQiOjE3NDA5ODM3NTUsImV4cCI6MTc0MTU4ODU1NX0.OT9ls_F-uFhPHNpRIFH5BxZ2QPPTBasrrfd7evgiP5E
+  TestToken: 530fe0d612974c49a395d67455a2a8fc
   JSManager: {fileID: 1200192711}
 --- !u!114 &500036493
 MonoBehaviour:
