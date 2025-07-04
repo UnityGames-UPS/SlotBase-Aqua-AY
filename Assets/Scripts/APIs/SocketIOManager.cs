@@ -39,11 +39,7 @@ public class SocketIOManager : MonoBehaviour
     internal JSHandler _jsManager;
 
     protected string SocketURI = null;
-    // protected string TestSocketURI = "https://game-crm-rtp-backend.onrender.com/";
-    // protected string TestSocketURI = "https://dev.casinoparadize.com";
-    // protected string TestSocketURI = "https://jmn3wfcb-5000.inc1.devtunnels.ms/";
-    // protected string TestSocketURI = "https://7p68wzhv-5000.inc1.devtunnels.ms/";
-    // protected string TestSocketURI = "https://jmn3wfcb-5000.inc1.devtunnels.ms/";
+   
     protected string TestSocketURI = "https://sl3l5zz3-5000.inc1.devtunnels.ms/";
 
     [SerializeField]
@@ -200,7 +196,7 @@ public class SocketIOManager : MonoBehaviour
         gameSocket.On<string>(SocketIOEventTypes.Disconnect, OnDisconnected);
         gameSocket.On<string>(SocketIOEventTypes.Error, OnError);
         gameSocket.On<string>("game:init", OnListenEvent);
-        gameSocket.On<string>("spin:result", OnResult);
+        gameSocket.On<string>("result", OnResult);
         gameSocket.On<bool>("socketState", OnSocketState);
         gameSocket.On<string>("bonus:result", OnBonusResult);
         gameSocket.On<string>("internalError", OnSocketError);
@@ -359,10 +355,13 @@ public class SocketIOManager : MonoBehaviour
     {
         isResultdone = false;
         MessageData message = new MessageData();
-        message.currentBet = slotManager.BetCounter;
+        message.payload = new SentDeta();
+        message.type = "SPIN";
+        Debug.Log(slotManager.BetCounter);
+        message.payload.betIndex = slotManager.BetCounter;
         // Serialize message data to JSON
         string json = JsonUtility.ToJson(message);
-        SendDataWithNamespace("spin:request", json);
+        SendDataWithNamespace("request", json);
     }
     void UpdateUiOnResult(Root myData)
     {
@@ -374,14 +373,15 @@ public class SocketIOManager : MonoBehaviour
     internal void OnBonusCollect(int index)
     {
         isResultdone = false;
-        BonusData data = new()
-        {
-            type = "bonus",
-            Event = "tap",
-            index = index,
-        };
-        string json = JsonUtility.ToJson(data);
-        SendDataWithNamespace("bonus:request", json);
+        MessageData message = new MessageData();
+        message.payload = new SentDeta();
+        message.type = "BONUS";
+
+        message.payload.index = index;
+        message.payload.Event = "tap";
+        // Serialize message data to JSON
+        string json = JsonUtility.ToJson(message);
+        SendDataWithNamespace("request", json);
     }
 
     private void SendDataWithNamespace(string eventName, string json = null)
@@ -489,10 +489,19 @@ public class BonusData
 [Serializable]
 public class MessageData
 {
-    public int currentBet;
+    public string type;
+
+    public SentDeta payload;
 
 }
-
+[Serializable]
+public class SentDeta
+{
+    public int betIndex;
+    public string Event;
+    public double lastWinning;
+    public int index;
+}
 [Serializable]
 public class GameData
 {

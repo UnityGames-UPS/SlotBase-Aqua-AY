@@ -777,7 +777,7 @@ public class SlotBehaviour : MonoBehaviour
                 Tempimages[j].slotImages[i].sprite = myImages[resultNum];
             }
         }
-
+        CheckForFeaturesAnimation();
         if (IsTurboOn || IsFreeSpin)
         {
             yield return new WaitForSeconds(0.1f);
@@ -1015,7 +1015,61 @@ public class SlotBehaviour : MonoBehaviour
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString("f3");
         if (TotalWin_text) TotalWin_text.text = SocketManager.ResultData.payload.winAmount.ToString("f3");
     }
-    //generate the payout lines generated 
+    //generate the payout lines generated
+    private void CheckForFeaturesAnimation()
+    {
+        bool playJackpot = false;
+        bool playScatter = false;
+        bool playBonus = false;
+        bool playFreespin = false;
+        if (SocketManager.ResultData.jackpot.amount > 0)
+        {
+            playJackpot = true;
+        }
+        if (SocketManager.ResultData.scatter.amount > 0)
+        {
+            playScatter = true;
+        }
+        if (SocketManager.ResultData.bonus.istriggered)
+        {
+            playBonus = true;
+        }
+        if (SocketManager.ResultData.freeSpin.isFreeSpin)
+        {
+            playFreespin = true;
+        }
+        PlayFeatureAnimation(playJackpot, playScatter, playBonus, playFreespin);
+    }
+    private void PlayFeatureAnimation(bool jackpot = false, bool scatter = false, bool bonus = false, bool freeSpin = false)
+    {
+        for (int i = 0; i < SocketManager.ResultData.matrix.Count; i++)
+        {
+            for (int j = 0; j < SocketManager.ResultData.matrix[i].Count; j++)
+            {
+
+                if (int.TryParse(SocketManager.ResultData.matrix[i][j], out int parsedNumber))
+                {
+                    if (jackpot && parsedNumber == 16)
+                    {
+                        StartGameAnimation(Tempimages[j].slotImages[i].gameObject);
+                    }
+                    if (scatter && parsedNumber == 14)
+                    {
+                        StartGameAnimation(Tempimages[j].slotImages[i].gameObject);
+                    }
+                    if (bonus && parsedNumber == 12)
+                    {
+                        StartGameAnimation(Tempimages[j].slotImages[i].gameObject);
+                    }
+                    if (freeSpin && parsedNumber == 15)
+                    {
+                        StartGameAnimation(Tempimages[j].slotImages[i].gameObject);
+                    }
+                }
+
+            }
+        }
+    }
     private void CheckPayoutLineBackend(List<int> LineId, double jackpot = 0)
     {
         List<int> y_points = null;

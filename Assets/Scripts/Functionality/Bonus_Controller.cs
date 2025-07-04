@@ -32,7 +32,7 @@ public class Bonus_Controller : MonoBehaviour
         {
             int index = i;
             chest[i].onClick.RemoveAllListeners();
-            chest[i].onClick.AddListener(delegate { OnChestOpen(index); socketManager.OnBonusCollect(index); });
+            chest[i].onClick.AddListener(delegate { OnChestOpen(index);  });
         }
     }
 
@@ -80,6 +80,7 @@ public class Bonus_Controller : MonoBehaviour
         audioController.PlayButtonAudio();
         // if(resultData.Count==0)
         // return;
+        socketManager.OnBonusCollect(index);
         StartCoroutine(chestOpenRoutine(index));
 
     }
