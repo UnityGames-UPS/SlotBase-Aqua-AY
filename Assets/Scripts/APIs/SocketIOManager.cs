@@ -40,7 +40,7 @@ public class SocketIOManager : MonoBehaviour
 
     protected string SocketURI = null;
    
-    protected string TestSocketURI = "https://sl3l5zz3-5000.inc1.devtunnels.ms/";
+    protected string TestSocketURI = "https://9qr6bgs3-5000.inc1.devtunnels.ms/";
 
     [SerializeField]
     private string TestToken;

@@ -8283,7 +8283,7 @@ MonoBehaviour:
   uIManager: {fileID: 377874625}
   bonusdata: []
   _jsManager: {fileID: 500036493}
-  TestToken: c88d045c1963415788e9fb803ed32d08
+  TestToken: 9cdf33baa7d649bb964421d8bd5b9c83
   JSManager: {fileID: 1200192711}
 --- !u!114 &500036493
 MonoBehaviour:

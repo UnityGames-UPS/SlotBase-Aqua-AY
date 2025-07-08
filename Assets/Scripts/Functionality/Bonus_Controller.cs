@@ -25,7 +25,7 @@ public class Bonus_Controller : MonoBehaviour
 
     [SerializeField] private GameObject WinPopUp;
     [SerializeField] private TMP_Text WinPopUpText;
-    private double winAmount;
+
     private void Start()
     {
         for (int i = 0; i < chest.Length; i++)
@@ -58,7 +58,6 @@ public class Bonus_Controller : MonoBehaviour
         isfinished = false;
         resultData.Clear();
         openCount = 0;
-        winAmount = 0;
         WinPopUpText.text = "";
         bonusObject.SetActive(false);
         WinPopUp.SetActive(false);
@@ -101,7 +100,6 @@ public class Bonus_Controller : MonoBehaviour
         {
             audioController.PlayWLAudio("bonuswin");
             reward_text[index].text = "+ " + (resultData[index]* slotBehaviour.GetCurrentbetperLine()).ToString();
-            winAmount += (resultData[openCount] * slotBehaviour.GetCurrentbetperLine());
         }
         else
         {
@@ -124,7 +122,7 @@ public class Bonus_Controller : MonoBehaviour
         if (gameFinishied) {
 
             WinPopUp.transform.localScale = Vector3.zero;
-            WinPopUpText.text = winAmount.ToString();
+            WinPopUpText.text = socketManager.ResultData.payload.winAmount.ToString();
             WinPopUp.SetActive(true);
             WinPopUp.transform.DOScale(Vector3.one, 0.8f);
             yield return new WaitForSeconds(1);
