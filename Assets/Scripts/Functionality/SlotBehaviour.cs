@@ -190,7 +190,7 @@ public class SlotBehaviour : MonoBehaviour
     private float SpinDelay = 0.2f;
     private bool IsTurboOn;
     private bool WasAutoSpinOn;
-
+    internal bool init = false;
 
     private void Start()
     {
@@ -547,6 +547,7 @@ public class SlotBehaviour : MonoBehaviour
         currentBalance = SocketManager.PlayerData.balance;
         currentTotalBet = SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count;
         CompareBalance();
+        init = true;
     }
 
     //function to populate animation sprites accordingly
@@ -829,46 +830,40 @@ public class SlotBehaviour : MonoBehaviour
             CheckPayoutLineBackend(winLine);
             //  if (m_Gamble_Button) m_Gamble_Button.interactable = true;
         }
-        CheckPopups = true;
+        
 
         currentBalance = SocketManager.PlayerData.balance;
 
         if (audioController) audioController.StopWLAaudio();
-
-        if (SocketManager.ResultData.jackpot.isTriggered)
-        {
-            uiManager.PopulateWin(4, SocketManager.ResultData.jackpot.amount);
-
-            yield return new WaitUntil(() => !CheckPopups);
-            CheckPopups = true;
-
-        }
-
         if (SocketManager.ResultData.bonus.istriggered)
         {
-
             bonus_Controller.StartBonusGame(SocketManager.ResultData.bonus.result);
             yield return new WaitUntil(() => bonus_Controller.isfinished);
             yield return new WaitForSeconds(1f);
             bonus_Controller.FinishBonusGame();
-            CheckPopups = false;
+            SocketManager.ResultData.payload.winAmount = SocketManager.bonusData.payload.winAmount;
+            SocketManager.PlayerData = SocketManager.bonusData.player;
+        }
+
+        CheckPopups = true;
+        if (SocketManager.ResultData.jackpot.isTriggered)
+        {
+            uiManager.PopulateWin(4, SocketManager.ResultData.jackpot.amount);
         }
         else
         {
             CheckWinPopups();
         }
-
         yield return new WaitUntil(() => !CheckPopups);
+
         if (audioController) audioController.StopWLAaudio();
-        if (TotalWin_text) TotalWin_text.text = SocketManager.ResultData.payload.winAmount.ToString("f3");
+        if (TotalWin_text) TotalWin_text.text = SocketManager.ResultData.payload.winAmount.ToString("F3");
+        
         BalanceTween?.Kill();
         if (Balance_text) Balance_text.text = SocketManager.PlayerData.balance.ToString("f3");
 
         if (SocketManager.ResultData.payload.winAmount > 0)
             WinningsAnim(true);
-
-
-
 
         if (SocketManager.ResultData.freeSpin.isFreeSpin)
         {

@@ -350,7 +350,9 @@ public class UIManager : MonoBehaviour
             WinPopupTextTween.Kill();
             WinPopupTextTween = null;
         }
-        ClosePopup(WinPopup_Object);
+        if(WinPopup_Object.activeInHierarchy) ClosePopup(WinPopup_Object);
+        if (jackpot_Object.activeInHierarchy) ClosePopup(jackpot_Object);
+        SkipWinAnimation.gameObject.SetActive(false);
         slotManager.CheckPopups = false;
     }
 
@@ -391,41 +393,37 @@ public class UIManager : MonoBehaviour
         double initAmount = 0;
         if (jackpot)
         {
+            jackpot_Text.text = "0";
             if (jackpot_Object) jackpot_Object.SetActive(true);
         }
         else
         {
+            Win_Text.text = "0";
             if (WinPopup_Object) WinPopup_Object.SetActive(true);
-
         }
 
         if (MainPopup_Object) MainPopup_Object.SetActive(true);
+        SkipWinAnimation.gameObject.SetActive(true);
 
         WinPopupTextTween=DOTween.To(() => initAmount, (val) => initAmount = val, amount, 5f).OnUpdate(() =>
         {
             if (jackpot)
             {
                 if (jackpot_Text) jackpot_Text.text = initAmount.ToString("f3");
-
             }
             else
             {
-
                 if (Win_Text) Win_Text.text = initAmount.ToString("f3");
-
             }
         }).OnComplete(()=>{
 
-                        if (jackpot)
+            if (jackpot)
             {
                 if (jackpot_Text) jackpot_Text.text = initAmount.ToString();
-
             }
             else
             {
-
                 if (Win_Text) Win_Text.text = initAmount.ToString();
-
             }
         });
 
@@ -443,6 +441,7 @@ public class UIManager : MonoBehaviour
                 ClosePopup(WinPopup_Object);
                 Win_Text.text = "";
             }
+            SkipWinAnimation.gameObject.SetActive(false);
             slotManager.CheckPopups = false;
         });
     }

@@ -19,14 +19,15 @@ public class SocketIOManager : MonoBehaviour
 
     [SerializeField] private SlotBehaviour slotManager;
     [SerializeField] private UIManager uIManager;
+    [SerializeField] private Bonus_Controller bonusController;
 
     internal GameData InitialData = null;
     internal UiData UIData = null;
     internal Root ResultData = null;
     internal Player PlayerData = null;
     internal Root GambleData = null;
+    internal Root bonusData = new();
     internal List<List<int>> LineData = null;
-    [SerializeField] internal List<string> bonusdata = null;
 
     //WebSocket currentSocket = null;
     internal bool isResultdone = false;
@@ -194,11 +195,10 @@ public class SocketIOManager : MonoBehaviour
         // Set subscriptions
         gameSocket.On<ConnectResponse>(SocketIOEventTypes.Connect, OnConnected);
         gameSocket.On<string>(SocketIOEventTypes.Disconnect, OnDisconnected);
-        gameSocket.On<string>(SocketIOEventTypes.Error, OnError);
+        gameSocket.On<object>(SocketIOEventTypes.Error, OnError);
         gameSocket.On<string>("game:init", OnListenEvent);
         gameSocket.On<string>("result", OnResult);
         gameSocket.On<bool>("socketState", OnSocketState);
-        gameSocket.On<string>("bonus:result", OnBonusResult);
         gameSocket.On<string>("internalError", OnSocketError);
         gameSocket.On<string>("alert", OnSocketAlert);
         gameSocket.On<string>("AnotherDevice", OnSocketOtherDevice); //BackendChanges Finish
@@ -211,17 +211,8 @@ public class SocketIOManager : MonoBehaviour
         SendPing();
         //InitRequest("AUTH");
     }
-    void OnBonusResult(string data)
-    {
-        // Handle the game result here
-        Debug.Log("Bonus Result: " + data);
-
-        ParseResponse(data);
-
-    }
     void OnResult(string data)
     {
-        print(data);
         ParseResponse(data);
     }
     private void OnDisconnected(string response)
@@ -231,7 +222,7 @@ public class SocketIOManager : MonoBehaviour
         uIManager.DisconnectionPopup();
     }
 
-    private void OnError(string response)
+    private void OnError(object response)
     {
         Debug.LogError("Error: " + response);
     }
@@ -272,7 +263,7 @@ public class SocketIOManager : MonoBehaviour
                     InitialData = myData.gameData;
                     UIData = myData.uiData;
                     PlayerData = myData.player;
-                    bonusdata = GetBonusData(myData.gameData.spinBonus);
+                    //bonusdata = GetBonusData(myData.gameData.spinBonus);
 
                     if (!SetInit)
                     {
@@ -301,9 +292,9 @@ public class SocketIOManager : MonoBehaviour
                 }
             case "bonusResult":
                 {
-                    Debug.Log(jsonObject);
-                    UpdateUiOnResult(myData);
-                    isResultdone = true;
+                    bonusData = myData;
+                    this.PlayerData = myData.player;
+                    bonusController.waitForBonusResult = false;
                     break;
                 }
             case "ExitUser":
@@ -363,7 +354,7 @@ public class SocketIOManager : MonoBehaviour
         string json = JsonUtility.ToJson(message);
         SendDataWithNamespace("request", json);
     }
-    void UpdateUiOnResult(Root myData)
+    void UpdateBonusData(Root myData)
     {
         PlayerData = myData.player;
         ResultData.payload.winAmount = myData.payload.winAmount;
@@ -551,6 +542,8 @@ public class Payload
     public double currentWinning { get; set; }
     public Cards cards { get; set; }
     public double balance { get; set; }
+    //bonus
+    public double payout { get; set; }
 }
 [Serializable]
 public class Cards
