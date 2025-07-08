@@ -5389,9 +5389,6 @@ MonoBehaviour:
   - {fileID: 1433230166}
   - {fileID: 1948979916}
   bonusObject: {fileID: 379464809}
-  openCount: 0
-  isfinished: 0
-  openIndex: 
   audioController: {fileID: 4877248867377730751}
   slotBehaviour: {fileID: 2046803210}
   socketManager: {fileID: 500036492}
@@ -8281,7 +8278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotManager: {fileID: 2046803210}
   uIManager: {fileID: 377874625}
-  bonusdata: []
+  bonusController: {fileID: 342004808}
   _jsManager: {fileID: 500036493}
   TestToken: fc0f55f0f83843adb38452e6d4b01b5c
   JSManager: {fileID: 1200192711}
