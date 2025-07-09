@@ -24,7 +24,10 @@ public class AutoSpinManager : MonoBehaviour, IPointerUpHandler, IPointerDownHan
 		Debug.Log("run on pointer UP");
 		if (!slotManager.IsHoldSpin)
 		{
+
 			slotManager.StopSpinRoutine();
+			slotManager.WasAutoSpinOn = false;
+			Debug.Log("auto spin stopp");
 		}
 	}
 }
