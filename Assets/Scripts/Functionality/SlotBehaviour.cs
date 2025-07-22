@@ -706,10 +706,6 @@ public class SlotBehaviour : MonoBehaviour
     }
     private IEnumerator TweenRoutine()
     {
-        audioController.StopWLAaudio();
-        audioController.PlaySpinBonusAudio();
-            TotalWin_text.text="0.00";
-         
         if (currentBalance < currentTotalBet && !IsFreeSpin)
         {
             CompareBalance();
@@ -721,6 +717,10 @@ public class SlotBehaviour : MonoBehaviour
             ToggleButtonGrp(true);
             yield break;
         }
+        audioController.StopWLAaudio();
+        audioController.PlaySpinBonusAudio();
+        TotalWin_text.text="0.00";
+         
 
         IsSpinning = true;
         ToggleButtonGrp(false);
