@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Aqua-Slots.sln"
+    "dotnet.defaultSolution": "SlotBase-Aqua-AY.sln"
 }
