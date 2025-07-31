@@ -36,9 +36,6 @@ public class SocketIOManager : MonoBehaviour
     // protected string nameSpace="game"; //BackendChanges
     protected string nameSpace = "playground"; //BackendChanges
     private Socket gameSocket; //BackendChanges
-    [SerializeField]
-    internal JSHandler _jsManager;
-
     protected string SocketURI = null;
    
     protected string TestSocketURI = "https://9qr6bgs3-5000.inc1.devtunnels.ms/";
