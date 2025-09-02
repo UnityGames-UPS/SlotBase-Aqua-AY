@@ -31,7 +31,7 @@ public class SocketIOManager : MonoBehaviour
   private Socket gameSocket; //BackendChanges
   protected string SocketURI = null;
 
-  protected string TestSocketURI = "https://9qr6bgs3-5000.inc1.devtunnels.ms/";
+  [SerializeField] protected string TestSocketURI = "https://9qr6bgs3-5000.inc1.devtunnels.ms/";
 
   [SerializeField]
   private string TestToken;

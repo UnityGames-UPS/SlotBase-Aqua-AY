@@ -438,6 +438,7 @@ public class SlotBehaviour : MonoBehaviour
     if (BetPerLine_text) BetPerLine_text.text = SocketManager.InitialData.bets[BetCounter].ToString();
     currentTotalBet = SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count;
     // CompareBalance();
+    uiManager.InitialiseUIData(SocketManager.UIData.paylines);
 
   }
 
@@ -534,12 +535,14 @@ public class SlotBehaviour : MonoBehaviour
       {
         BetCounter = SocketManager.InitialData.bets.Count - 1;
       }
+
     }
     // if (BetPerLine_text) BetPerLine_text.text = SocketManager.InitialData.bets[BetCounter].ToString();
     if (TotalBet_text) TotalBet_text.text = (SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count).ToString();
     currentTotalBet = SocketManager.InitialData.bets[BetCounter] * SocketManager.InitialData.lines.Count;
 
     // CompareBalance();
+    uiManager.InitialiseUIData(SocketManager.UIData.paylines);
 
 
   }
@@ -941,15 +944,15 @@ public class SlotBehaviour : MonoBehaviour
   }
   internal void CheckWinPopups()
   {
-    if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 10 && SocketManager.ResultData.payload.winAmount < currentTotalBet * 15)
+    if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 5 && SocketManager.ResultData.payload.winAmount < currentTotalBet * 10)
     {
       uiManager.PopulateWin(1, SocketManager.ResultData.payload.winAmount);
     }
-    else if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 15 && SocketManager.ResultData.payload.winAmount < currentTotalBet * 20)
+    else if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 10 && SocketManager.ResultData.payload.winAmount < currentTotalBet * 15)
     {
       uiManager.PopulateWin(2, SocketManager.ResultData.payload.winAmount);
     }
-    else if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 20)
+    else if (SocketManager.ResultData.payload.winAmount >= currentTotalBet * 15)
     {
       uiManager.PopulateWin(3, SocketManager.ResultData.payload.winAmount);
     }
