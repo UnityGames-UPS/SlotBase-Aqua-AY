@@ -8357,7 +8357,7 @@ MonoBehaviour:
   bonusController: {fileID: 342004808}
   RaycastBlocker: {fileID: 692674961}
   TestSocketURI: http://localhost:5000/
-  TestToken: 6b063bdb3ffe4d5f92fe9bcc4a9c2ee0
+  TestToken: 0f31c7b08f75485e98ade451cc0bff8c
   JSManager: {fileID: 1200192711}
 --- !u!1 &502968745
 GameObject:
