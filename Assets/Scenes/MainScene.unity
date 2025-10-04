@@ -6280,7 +6280,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &379464810
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8357,7 +8357,7 @@ MonoBehaviour:
   bonusController: {fileID: 342004808}
   RaycastBlocker: {fileID: 692674961}
   TestSocketURI: http://localhost:5000/
-  TestToken: 0f31c7b08f75485e98ade451cc0bff8c
+  TestToken: 7919725a89dc497c8d9a50c84abee99f
   JSManager: {fileID: 1200192711}
 --- !u!1 &502968745
 GameObject:
@@ -12012,7 +12012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &697749284
 RectTransform:
   m_ObjectHideFlags: 0

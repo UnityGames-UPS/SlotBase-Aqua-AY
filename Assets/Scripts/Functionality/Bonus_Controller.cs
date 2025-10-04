@@ -11,7 +11,7 @@ public class Bonus_Controller : MonoBehaviour
     [SerializeField] private Button[] chest;
     [SerializeField] private ImageAnimation[] chestAnim;
     [SerializeField] private TMP_Text[] reward_text;
-    private List<double> resultData= new List<double>();
+    private List<double> resultData = new List<double>();
     [SerializeField] private GameObject bonusObject;
 
     internal bool isfinished = false;
@@ -32,31 +32,33 @@ public class Bonus_Controller : MonoBehaviour
         {
             int index = i;
             chest[i].onClick.RemoveAllListeners();
-            chest[i].onClick.AddListener(delegate { OnChestOpen(index);  });
+            chest[i].onClick.AddListener(delegate { OnChestOpen(index); });
         }
     }
 
     internal void StartBonusGame(List<double> result)
     {
-
-        for (int i = 0; i < result.Count; i++)
-        {
-            resultData.Add(result[i]);
-        }
+        Debug.Log("___Bonus Started");
+        // for (int i = 0; i < result.Count; i++)
+        // {
+        //     resultData.Add(result[i]);
+        // }
 
         audioController.StopBgAudio();
         audioController.StopWLAaudio();
         audioController.playBgAudio("bonus");
+        Debug.Log("___Bonus Started");
 
         bonusObject.SetActive(true);
         TotalWinAmount = 0;
+        Debug.Log("___Bonus Started");
     }
 
     internal void FinishBonusGame()
     {
         opening = false;
         isfinished = false;
-        resultData.Clear();
+        // resultData.Clear();
         WinPopUpText.text = "";
         bonusObject.SetActive(false);
         WinPopUp.SetActive(false);
@@ -85,13 +87,13 @@ public class Bonus_Controller : MonoBehaviour
         opening = true;
         chest[index].interactable = false;
         bool gameFinishied = false;
-        Tween tween = chestAnim[index].transform.DOShakePosition(1f, new Vector3(15,0,0), 30, 90,true).SetLoops(-1, LoopType.Incremental);
+        Tween tween = chestAnim[index].transform.DOShakePosition(1f, new Vector3(15, 0, 0), 30, 90, true).SetLoops(-1, LoopType.Incremental);
         yield return new WaitUntil(() => !waitForBonusResult);
         tween.Kill();
         audioController.StopApinBonusAudio();
         chestAnim[index].StartAnimation();
 
-        if (socketManager.bonusData.payload.payout>0)
+        if (socketManager.bonusData.payload.payout > 0)
         {
             audioController.PlayWLAudio("bonuswin");
             reward_text[index].text = "+ " + socketManager.bonusData.payload.winAmount.ToString("F3");
@@ -111,9 +113,10 @@ public class Bonus_Controller : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         reward_text[index].gameObject.SetActive(false);
         reward_text[index].transform.localPosition = new Vector3(-50, -42);
-        
+
         audioController.StopWLAaudio();
-        if (gameFinishied){
+        if (gameFinishied)
+        {
             WinPopUp.transform.localScale = Vector3.zero;
             WinPopUpText.text = TotalWinAmount.ToString("F3");
             WinPopUp.SetActive(true);
